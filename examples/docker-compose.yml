@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  robust:
+    image: aminofox/robust:0.1.0
+    container_name: robust-server
+    ports:
+      - "8686:8686"
+    environment:
+      - ROBUST_LOG_LEVEL=info
+    volumes:
+      - robust-data:/var/lib/robust
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8686"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  robust-data:
+    driver: local
